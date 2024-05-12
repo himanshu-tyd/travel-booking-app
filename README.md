@@ -1,4 +1,4 @@
-# TRAVEL-BBOKING-APP
+# TRAVEL-BOOKING-APP
 
 ## Description
 
