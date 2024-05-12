@@ -1,8 +1,8 @@
-# Project Name
+# TRAVEL-BBOKING-APP
 
 ## Description
 
-This project is a [brief description of your project].
+This project is about travel management system.
 
 ## Installation
 
