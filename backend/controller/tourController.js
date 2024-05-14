@@ -45,16 +45,16 @@ export const deleteTour = async (req, res) => {
     const exist = await Tour.findOne({
       _id: id,
     });
-    
+
     if (exist) {
       const dataDelete = await Tour.findByIdAndDelete(id);
-     return res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: "successfully Deleted",
         data: dataDelete,
       });
     }
-    res.status(404).json({success:false,message:'Not found user'})
+    res.status(404).json({ success: false, message: "Not found user" });
   } catch (error) {
     res.status(500).json({ success: false, message: "failed to Deleted" });
     console.log(`error while deleteing => ${error}`);
@@ -65,7 +65,7 @@ export const findSingleTour = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const user = await Tour.findById(id);
+    const user = await Tour.findById(id).populate("reviews");
 
     res
       .status(200)
@@ -83,23 +83,26 @@ export const findAllTour = async (req, res) => {
 
   try {
     const allUser = await Tour.find({})
+      .populate("reviews")
       .skip(page * 8)
       .limit(8);
 
-    if (allUser.length >= 0) {
-      res.status(200).json({
+    if (allUser.length > 0) {
+      return res.status(200).json({
         success: true,
         total: allUser.length,
         message: "successfully find all user ",
         data: allUser,
       });
     }
-    res.status(404).json({
+    return res.status(404).json({
       success: false,
       message: "Not found any user ",
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to finding user" });
+    return res
+      .status(500)
+      .json({ success: false, message: "Failed to finding user" });
     console.log(`error while finding all user => ${error}`);
   }
 };
@@ -116,7 +119,7 @@ export const getTourSearchBy = async (req, res) => {
       city,
       distance: { $gte: distance },
       maxGroupSize: { $gte: maxGroupSize },
-    });
+    }).populate("reviews");
 
     if (searchResult.length > 0) {
       res
